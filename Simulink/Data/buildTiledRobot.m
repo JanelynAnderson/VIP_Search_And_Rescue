@@ -26,8 +26,13 @@ addBody(robot, mount, 'base');
 
 parent = 'mount';
 for k = 1:n
-    Lk = L;
-    mk = m * Lk / L;
+    if(or(k == 1, k == 0))
+        Lk = L/2;
+        mk = k/2;
+    else
+        Lk = L;
+        mk = m;
+    end
 
     body = rigidBody(sprintf('seg%d',k));
     jnt  = rigidBodyJoint(sprintf('joint%d',k),'revolute');
