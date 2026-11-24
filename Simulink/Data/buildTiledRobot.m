@@ -26,13 +26,8 @@ addBody(robot, mount, 'base');
 
 parent = 'mount';
 for k = 1:n
-    if(or(k == 1, k == 0))
-        Lk = L/2;
-        mk = k/2;
-    else
-        Lk = L;
-        mk = m;
-    end
+    Lk = L;
+    mk = m * Lk / L;
 
     body = rigidBody(sprintf('seg%d',k));
     jnt  = rigidBodyJoint(sprintf('joint%d',k),'revolute');
@@ -48,7 +43,12 @@ for k = 1:n
     body.Joint = jnt;
 
     Ixx = mk*(3*r^2 + Lk^2)/12 + mk*(Lk/2)^2;
-    body.Mass         = mk;
+    if(k==n)
+        body.Mass         = mk/2;
+    else
+        body.Mass         = mk;
+    end
+   
     body.CenterOfMass = [0 0 Lk/2];
     body.Inertia      = [Ixx Ixx mk*r^2/2 0 0 0];
 
